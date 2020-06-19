@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  </head>
+  <body>
+    <div id="container"></div>
+    <script>
+      const container = document.querySelector("#container");
+
+      for (let i = 1; i < 17; i++) {
+        for (let j = 1; j < 17; j++) {
+          container.appendChild(document.createElement("div"));
+          container.lastElementChild.setAttribute(`id`,`${i} ${j}`);
+        }
+      }
+    </script>
+  </body>
+</html>
