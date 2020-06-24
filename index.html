@@ -1,18 +1,77 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <style>
+      #container {
+        height: 800px;
+        width: 800px;
+        display: flex;
+        flex-direction: column;
+        border: 2px solid black;
+      }
+      .row {
+        display: flex;
+        flex-direction: row;
+      }
+      .box {
+        height: 20px;
+        width: 20px;
+        border: 2px solid black;
+      }
+      .fullBox {
+        background-color: black;
+      }
+    </style>
   </head>
   <body>
+    <button id="clear">CLEAR</button>
     <div id="container"></div>
     <script>
       const container = document.querySelector("#container");
+      let size = 16;
 
-      for (let i = 1; i < 17; i++) {
-        for (let j = 1; j < 17; j++) {
+      function createGrid() {
+        for (let i = 1; i < size + 1; i++) {
           container.appendChild(document.createElement("div"));
-          container.lastElementChild.setAttribute(`id`,`${i} ${j}`);
+          let lastRow = container.lastElementChild;
+          lastRow.setAttribute("class", "row");
+          lastRow.setAttribute(`id`, `row${i}`);
+          for (let j = 1; j < size + 1; j++) {
+            lastRow.appendChild(document.createElement("div"));
+            lastRow.lastElementChild.setAttribute(`id`, `x${i}-y${j}`);
+            lastRow.lastElementChild.setAttribute(`class`, `box`);
+          }
         }
       }
+
+      function clearGrid() {
+        for (let i = 1; i < size + 1; i++) {
+          let lastRow = document.querySelector(`#row${i}`);
+          container.removeChild(lastRow);
+        }
+      }
+
+      createGrid();
+      let boxes = document.querySelectorAll(".box");
+      fillBox(boxes);
+
+      const button = document.querySelector("#clear");
+      button.addEventListener("click", () => {
+        clearGrid();
+        size = +prompt("Set the grid size:");
+        createGrid();
+        let boxes = document.querySelectorAll(".box");
+        fillBox(boxes);
+      });
+
+      function fillBox(boxes) {
+        boxes.forEach((box) => {
+          box.addEventListener("pointerover", () => {
+            box.classList.add("fullBox");
+          });
+        });
+      };
+      
     </script>
   </body>
 </html>
