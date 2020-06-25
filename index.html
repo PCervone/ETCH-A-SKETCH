@@ -6,17 +6,20 @@
         height: 800px;
         width: 800px;
         display: flex;
-        flex-direction: column;
+        flex-flow: column nowrap;
         border: 2px solid black;
       }
       .row {
         display: flex;
+        justify-content: center;
         flex-direction: row;
+        height: 100%;
+        width: 100%;
       }
       .box {
-        height: 20px;
-        width: 20px;
-        border: 2px solid black;
+        height: 100%;
+        width: 100%;
+        border: 1px solid black;
       }
       .fullBox {
         background-color: black;
@@ -24,10 +27,15 @@
     </style>
   </head>
   <body>
-    <button id="clear">CLEAR</button>
+    <button id="btnClear">CLEAR</button>
+    <button id="btnGrid">GRID</button>
+    <button id="btnSize">SIZE</button>
     <div id="container"></div>
     <script>
       const container = document.querySelector("#container");
+      const btnGrid = document.querySelector("#btnGrid");
+      const btnClear = document.querySelector("#btnClear");
+      const btnContainer = document.querySelector("#btnContaier");
       let size = 16;
 
       function createGrid() {
@@ -44,26 +52,27 @@
         }
       }
 
-      function clearGrid() {
+      function removeGrid() {
         for (let i = 1; i < size + 1; i++) {
           let lastRow = document.querySelector(`#row${i}`);
           container.removeChild(lastRow);
         }
       }
 
+      function clearGrid() {
+        for (let i = 1; i < size + 1; i++) {
+          let row = document.querySelector(`#row${i}`);
+          for (let j = 1; j < size + 1; j++) {
+            let item = row.querySelector(`#x${i}-y${j}`);
+            item.classList.remove("fullBox");
+          }
+        }
+      }
+
       createGrid();
       let boxes = document.querySelectorAll(".box");
       fillBox(boxes);
-
-      const button = document.querySelector("#clear");
-      button.addEventListener("click", () => {
-        clearGrid();
-        size = +prompt("Set the grid size:");
-        createGrid();
-        let boxes = document.querySelectorAll(".box");
-        fillBox(boxes);
-      });
-
+      
       function fillBox(boxes) {
         boxes.forEach((box) => {
           box.addEventListener("pointerover", () => {
@@ -71,7 +80,26 @@
           });
         });
       };
-      
+
+      btnGrid.addEventListener("click", () => {
+        removeGrid();
+        size = +prompt("Set the grid size:");
+        createGrid();
+        boxes = document.querySelectorAll(".box");
+        fillBox(boxes);
+      });
+
+      btnClear.addEventListener("click", () => {
+        clearGrid();
+      });
+
+      btnSize.addEventListener("click", () => {
+        let height = +prompt("Insert container height (px): ");
+        let width = +prompt("Insert container width (px): ");
+        let container = document.querySelector("#container");
+        container.style.height = `${height}px`;
+        container.style.width = `${width}px`;
+      });    
     </script>
   </body>
 </html>
